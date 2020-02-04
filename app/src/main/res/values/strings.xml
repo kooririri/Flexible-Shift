@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Shift</string>
+    <string name="title_home">スケジュール</string>
+    <string name="title_shift_submit">シフト希望</string>
+    <string name="title_personality">個人設定</string>
+    <string name="tx_self_shift_end">終了時間</string>
+    <string name="tx_self_shift_start">開始時間</string>
+    <string name="label_occupation">職種</string>
+    <string name="label_memo">メモ</string>
+    <string name="button_ok">登録</string>
+    <string name="btn_new">新規予定</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shift_release">シフト発表</string>
+</resources>

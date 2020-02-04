@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/baseline_event_24"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_shift_submit"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_shift_submit" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/baseline_web_24"
+        android:title="@string/shift_release" />
+
+    <item
+        android:id="@+id/navigation_personal_setting"
+        android:icon="@drawable/baseline_account_circle_24"
+        android:title="@string/title_personality" />
+
+</menu>

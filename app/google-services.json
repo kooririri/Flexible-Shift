@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1053819704825",
+    "firebase_url": "https://flexible-shift.firebaseio.com",
+    "project_id": "flexible-shift",
+    "storage_bucket": "flexible-shift.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053819704825:android:c9fd08e1a5f1c93a489928",
+        "android_client_info": {
+          "package_name": "local.hal.st31.android.shift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053819704825-8c0t4brp8e7bnd04j1loc3j50teusorp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "local.hal.st31.android.shift",
+            "certificate_hash": "4c9c4ee2761060c863e57c3011eb76b0468a10d1"
+          }
+        },
+        {
+          "client_id": "1053819704825-ek9fv2gte4pvmu1tdpm7uvde0ds2qaa6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8sk2Kh0zFh0uIxqVKtUXq4zD29DjIzJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053819704825-ek9fv2gte4pvmu1tdpm7uvde0ds2qaa6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
