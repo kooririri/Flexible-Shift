@@ -85,11 +85,15 @@ public class ShiftOptionAdapter3 extends RecyclerView.Adapter<ShiftOptionAdapter
             shiftOptionViewHolder.startTime.setTextColor(Color.BLACK);
             shiftOptionViewHolder.endTime.setTextColor(Color.BLACK);
         }else if(res.getSelectedFlag() == 7){
-            shiftOptionViewHolder.itemView.setBackgroundResource(R.drawable.button_clicked_style);
-            shiftOptionViewHolder.arrowImage.setImageResource(R.drawable.baseline_arrow_forward_ios_white_18);
-            shiftOptionViewHolder.optionBlock.setTextColor(Color.WHITE);
-            shiftOptionViewHolder.startTime.setTextColor(Color.WHITE);
-            shiftOptionViewHolder.endTime.setTextColor(Color.WHITE);
+            shiftOptionViewHolder.itemView.setBackgroundResource(R.drawable.shift_release_clicked_style);
+//            shiftOptionViewHolder.arrowImage.setImageResource(R.drawable.baseline_arrow_forward_ios_white_18);
+//            shiftOptionViewHolder.optionBlock.setTextColor(Color.WHITE);
+//            shiftOptionViewHolder.startTime.setTextColor(Color.WHITE);
+//            shiftOptionViewHolder.endTime.setTextColor(Color.WHITE);
+            shiftOptionViewHolder.arrowImage.setImageResource(R.drawable.baseline_keyboard_arrow_right_24);
+            shiftOptionViewHolder.optionBlock.setTextColor(Color.BLACK);
+            shiftOptionViewHolder.startTime.setTextColor(Color.BLACK);
+            shiftOptionViewHolder.endTime.setTextColor(Color.BLACK);
         }
     }
 

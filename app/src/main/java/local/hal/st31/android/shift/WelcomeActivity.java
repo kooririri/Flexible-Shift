@@ -16,7 +16,7 @@ public class WelcomeActivity extends BaseActivity {
         View view = View.inflate(getApplicationContext(),R.layout.activity_welcome,null);
         setContentView(view);
         AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
-        aa.setDuration(2000);
+        aa.setDuration(1000);
         view.startAnimation(aa);
         aa.setAnimationListener(new Animation.AnimationListener()
         {

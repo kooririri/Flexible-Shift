@@ -1,5 +1,7 @@
 package local.hal.st31.android.shift.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -37,7 +41,7 @@ import local.hal.st31.android.shift.db.DatabaseHelper;
 import local.hal.st31.android.shift.utils.DateUtils;
 import local.hal.st31.android.shift.utils.GlobalUtils;
 
-public class HomeFragment extends Fragment implements CalendarView.OnCalendarSelectListener, CalendarView.OnYearChangeListener, View.OnClickListener {
+public class HomeFragment extends Fragment implements CalendarView.OnCalendarSelectListener, CalendarView.OnYearChangeListener{
     private View fragmentView;
     private CalendarView calendarView;
     public String selectedDate;
@@ -52,6 +56,7 @@ public class HomeFragment extends Fragment implements CalendarView.OnCalendarSel
     TextView mTextCurrentDay;
     RelativeLayout mRelativeTool;
     private int userId;
+    ArrayList<SelfScheduleBean> data;
 
 
 
@@ -124,27 +129,60 @@ public class HomeFragment extends Fragment implements CalendarView.OnCalendarSel
 //        selectedDate = DateUtils.date2String(new Date(),"yyyy-MM-dd");
         dateLabel.setText(selectedDate);
 
+        reload();
+        initData();
+    }
+
+    private void reload(){
         db = _helper.getWritableDatabase();
-        ArrayList<SelfScheduleBean> data = DataAccess.selfScheduleSelectByDate(db, selectedDate,userId);
+        data = DataAccess.selfScheduleSelectByDate(db, selectedDate,userId);
         selfScheduleAdapter = new SelfScheduleAdapter(getContext());
         selfScheduleAdapter.setData(data);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//横並び
         selfScheduleRecyclerView.setLayoutManager(layoutManager);
         selfScheduleRecyclerView.setAdapter(selfScheduleAdapter);
-        initData();
+        selfScheduleAdapter.setOnItemClickListener(new SelfScheduleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showDialog(position);
+                Log.d("remove","removed");
+            }
+        });
+    }
+
+    private void showDialog(final int index){
+        final String[] options = {"削除","編集"};
+        final SelfScheduleBean selectedRecord = data.get(index);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0){
+                    long id = selectedRecord.getId();
+                    DataAccess.selfScheduleDelete(db,id);
+
+                    reload();
+                } else if(which == 1){
+                    Intent intent = new Intent(getContext(), NewSelfShiftAddActivity.class);
+                    Bundle extra = new Bundle();
+                    extra.putSerializable("selfSchedule",selectedRecord);
+                    extra.putInt("userId",userId);
+                    extra.putString("date",selectedDate);
+                    intent.putExtras(extra);
+                    startActivity(intent);
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel",null);
+        builder.create().show();
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     @Override
@@ -160,16 +198,10 @@ public class HomeFragment extends Fragment implements CalendarView.OnCalendarSel
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
 //        mYear = calendar.getYear();
-        db = _helper.getWritableDatabase();
         selectedDate = calendar.getYear()+"-"+calendar.getMonth()+"-"+calendar.getDay();
         dateLabel.setText(selectedDate);
-        ArrayList<SelfScheduleBean> data = DataAccess.selfScheduleSelectByDate(db, selectedDate,userId);
-        selfScheduleAdapter = new SelfScheduleAdapter(getContext());
-        selfScheduleAdapter.setData(data);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//横並び
-        selfScheduleRecyclerView.setLayoutManager(layoutManager);
-        selfScheduleRecyclerView.setAdapter(selfScheduleAdapter);
+        reload();
+        initData();
     }
 
     @Override
@@ -186,7 +218,7 @@ public class HomeFragment extends Fragment implements CalendarView.OnCalendarSel
         return calendar;
     }
 
-    protected void initData() {
+    private void initData() {
 //        int year = calendarView.getCurYear();
 //        int month = calendarView.getCurMonth();
         db = _helper.getWritableDatabase();

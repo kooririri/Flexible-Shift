@@ -44,7 +44,8 @@ public class SelfScheduleAdapter extends RecyclerView.Adapter<SelfScheduleAdapte
     @Override
     public SelfScheduleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = mInflater.inflate(R.layout.cell_self_schedule_item,viewGroup,false);
-        return new SelfScheduleViewHolder(view);
+        SelfScheduleViewHolder viewHolder = new SelfScheduleViewHolder(view);
+        return viewHolder;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class SelfScheduleAdapter extends RecyclerView.Adapter<SelfScheduleAdapte
         selfScheduleViewHolder.workTextVIew.setText(bean.getWork());
         selfScheduleViewHolder.memoTextView.setText(bean.getMemo());
         if (mOnItemClickListener != null) {
-            selfScheduleViewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            selfScheduleViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mOnItemClickListener.onItemClick(view, position);
@@ -73,11 +74,11 @@ public class SelfScheduleAdapter extends RecyclerView.Adapter<SelfScheduleAdapte
         this.data = data;
     }
 
-        public interface OnItemClickListener{
-            void onItemClick(View view, int position);
-        }
+    public interface OnItemClickListener{
+        void onItemClick(View view, int position);
+    }
 
-        public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
-            this.mOnItemClickListener = mOnItemClickListener;
-        }
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
 }

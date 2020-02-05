@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="80dp"
     android:orientation="horizontal"
     android:layout_margin="5dp"
     android:paddingBottom="5dp"
@@ -40,11 +40,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:ellipsize="end"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:lines="2"
             android:textColor="#333333"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="work"
+            android:layout_marginRight="20dp"
             />
 
         <TextView
@@ -52,12 +54,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:ellipsize="end"
             android:lines="2"
             android:layout_marginTop="4dp"
             android:textColor="#9f9f9f"
             android:textSize="12sp"
             android:text="memo"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_marginRight="20dp"
             />
     </LinearLayout>
 

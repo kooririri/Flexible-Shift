@@ -35,9 +35,12 @@ public class NewSelfShiftAddActivity extends BaseActivity {
     private String occupation ="";
     private String memo = "";
     private DatabaseHelper _helper;
+    private SQLiteDatabase db;
     private Button sendButton;
     private String date;
     private int userId;
+    private boolean editTag = false;
+    SelfScheduleBean selfScheduleBean =new SelfScheduleBean();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +48,18 @@ public class NewSelfShiftAddActivity extends BaseActivity {
         Intent intent = getIntent();
         date = intent.getStringExtra("date");
         userId = intent.getIntExtra("userId",0);
+        SelfScheduleBean selfScheduleBean = (SelfScheduleBean) intent.getSerializableExtra("selfSchedule");
+        if(selfScheduleBean != null){
+            editTag = true;
+            this.selfScheduleBean = selfScheduleBean;
+        }
         initView();
+
     }
 
     private void initView() {
         _helper = new DatabaseHelper(getApplicationContext());
+        db = _helper.getWritableDatabase();
         sendButton = findViewById(R.id.btn_send);
         LLStart = findViewById(R.id.self_shift_start_time);
         LLStart.setOnClickListener(new NewSelfShiftAddActivity.onTimeBlockClickListener());
@@ -61,6 +71,19 @@ public class NewSelfShiftAddActivity extends BaseActivity {
         tfbMemo = findViewById(R.id.text_field_boxes_memo);
         tfbOccupation.setHasClearButton(true);
         tfbMemo.setHasClearButton(true);
+        if(editTag == true){
+            occupation = selfScheduleBean.getWork();
+            memo = selfScheduleBean.getMemo();
+            date = selfScheduleBean.getDate();
+            startHour = selfScheduleBean.getStartTime().substring(0,2);
+            startMinute = selfScheduleBean.getStartTime().substring(3,5);
+            endHour = selfScheduleBean.getEndTime().substring(0,2);
+            endMinute = selfScheduleBean.getEndTime().substring(3,5);
+            startTime.setText(selfScheduleBean.getStartTime());
+            endTime.setText(selfScheduleBean.getEndTime());
+            tfbOccupation.setLabelText(selfScheduleBean.getWork());
+            tfbMemo.setLabelText(selfScheduleBean.getMemo());
+        }
         tfbOccupation.setSimpleTextChangeWatcher(new SimpleTextChangedWatcher() {
             @Override
             public void onTextChanged(String theNewText, boolean isError) {
@@ -80,16 +103,29 @@ public class NewSelfShiftAddActivity extends BaseActivity {
                 if((occupation.equals(""))||(memo.equals(""))||(startHour.equals(""))||(startMinute.equals(""))||(endHour.equals(""))||(endMinute.equals(""))){
                     Toast.makeText(getApplicationContext(),"内容を入力してください",Toast.LENGTH_LONG).show();
                 }else {
-                    SQLiteDatabase db = _helper.getWritableDatabase();
-                    SelfScheduleBean selfScheduleBean = new SelfScheduleBean();
-                    selfScheduleBean.setUserId(userId);
-                    selfScheduleBean.setWork(occupation);
-                    selfScheduleBean.setMemo(memo);
-                    selfScheduleBean.setStartTime(startHour+":"+startMinute);
-                    selfScheduleBean.setEndTime(endHour+":"+endMinute);
-                    selfScheduleBean.setDate(date);
-                    DataAccess.selfScheduleInsert(db,selfScheduleBean);
+                    db = _helper.getWritableDatabase();
 
+                    if(editTag == true){
+                        SelfScheduleBean bean = new SelfScheduleBean();
+                        bean.setUserId(userId);
+                        bean.setDate(date);
+                        bean.setWork(occupation);
+                        bean.setMemo(memo);
+                        bean.setId(selfScheduleBean.getId());
+                        bean.setStartTime(startHour+":"+startMinute);
+                        bean.setEndTime(endHour+":"+endMinute);
+                        DataAccess.selfScheduleUpdate(db,bean,selfScheduleBean.getId());
+                        Log.e("99980",bean.toString()+"   "+selfScheduleBean.getId());
+                    }else{
+                        SelfScheduleBean bean = new SelfScheduleBean();
+                        bean.setUserId(userId);
+                        bean.setWork(occupation);
+                        bean.setMemo(memo);
+                        bean.setStartTime(startHour+":"+startMinute);
+                        bean.setEndTime(endHour+":"+endMinute);
+                        bean.setDate(date);
+                        DataAccess.selfScheduleInsert(db,bean);
+                    }
                     Toast.makeText(getApplicationContext(),"登録しました",Toast.LENGTH_LONG).show();
                     NewSelfShiftAddActivity.this.finish();
                 }

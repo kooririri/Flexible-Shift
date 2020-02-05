@@ -31,7 +31,7 @@ public class ShiftMonthListAdapter2 extends RecyclerView.Adapter<ShiftMonthListA
     private DatabaseHelper _helper;
     private SQLiteDatabase db;
     int count = 1;
-
+    //TODO 现有bug，限制点击取消3次，刷新后又可以取消三次。把count永久化
     static class ShiftMonthListViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
         RecyclerView recyclerView;

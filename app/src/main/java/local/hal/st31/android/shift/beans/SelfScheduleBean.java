@@ -1,6 +1,8 @@
 package local.hal.st31.android.shift.beans;
 
-public class SelfScheduleBean {
+import java.io.Serializable;
+
+public class SelfScheduleBean implements Serializable {
     private long _id;
     private int userId;
     private String work;
@@ -13,6 +15,18 @@ public class SelfScheduleBean {
 
     }
 
+    @Override
+    public String toString() {
+        return "SelfScheduleBean{" +
+                "_id=" + _id +
+                ", userId=" + userId +
+                ", work='" + work + '\'' +
+                ", memo='" + memo + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
 
     public long getId() {
         return _id;

@@ -169,6 +169,17 @@ public class ShiftSubmitFragment extends Fragment {
         shiftTypeDataReceiver.execute(URLPost1,jsonData);
         SharedPreferences ps = PreferenceManager.getDefaultSharedPreferences(getContext());
         ps.edit().putInt("groupId",selectedGroupId).apply();
+        SharedPreferences sp = GlobalUtils.getInstance().mainActivity.getSharedPreferences("login", GlobalUtils.getInstance().context.MODE_PRIVATE);
+        savedId= sp.getInt("userId",0);
+        JSONObject userIdObject = new JSONObject();
+        try {
+            userIdObject.put("user_id",savedId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        GroupIdReceiver groupIdReceiver = new GroupIdReceiver();
+        groupIdReceiver.execute(URLPost0,userIdObject.toString());
+
     }
     private void initView(){
         //次の月（シフト）の日数を取得
