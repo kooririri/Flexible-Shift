@@ -2,30 +2,46 @@
 <LinearLayout
     android:id="@+id/member_block"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
     android:padding="5dp"
     android:layout_margin="5dp"
-    android:orientation="vertical"
-    android:gravity="center"
+    android:orientation="horizontal"
     android:background="@drawable/button_unclicked_style">
 
 
-    <TextView
-        android:id="@+id/txName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="name"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginRight="20dp">
 
-<!--    <RatingBar-->
+        <TextView
+            android:id="@+id/txName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="name"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+<!--    <me.zhanghai.android.materialratingbar.MaterialRatingBar-->
+<!--        android:layout_gravity="center"-->
 <!--        android:id="@+id/ratingBar"-->
-<!--        android:numStars="5"-->
-<!--        android:rating="0"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
 <!--        android:stepSize="1"-->
-<!--        android:max="5"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content">-->
-<!--    </RatingBar>-->
+<!--        style="@style/Widget.MaterialRatingBar.RatingBar" />-->
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="1"
+        android:max="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </RatingBar>
 
 </LinearLayout>

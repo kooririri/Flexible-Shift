@@ -16,8 +16,6 @@ import android.widget.Toast;
 import local.hal.st31.android.shift.beans.SelfScheduleBean;
 import local.hal.st31.android.shift.db.DataAccess;
 import local.hal.st31.android.shift.db.DatabaseHelper;
-import local.hal.st31.android.shift.fragment.HomeFragment;
-import local.hal.st31.android.shift.popup.NewShiftPopup;
 import studio.carbonylgroup.textfieldboxes.SimpleTextChangedWatcher;
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes;
 

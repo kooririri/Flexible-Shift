@@ -1,8 +1,7 @@
 package local.hal.st31.android.shift.beans;
 
 public class BlackListBean {
-    private int id;
-    private int myId;
+
     private int userId;
     private String nickName;
     private int blackRank;
@@ -23,21 +22,6 @@ public class BlackListBean {
                 '}';
     }
 
-    public int getMyId() {
-        return myId;
-    }
-
-    public void setMyId(int myId) {
-        this.myId = myId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getUserId() {
         return userId;

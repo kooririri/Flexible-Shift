@@ -4,9 +4,12 @@ package local.hal.st31.android.shift;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.larswerkman.holocolorpicker.ColorPicker;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
@@ -39,7 +45,9 @@ import local.hal.st31.android.shift.adapters.GroupMemberAdapter;
 import local.hal.st31.android.shift.beans.BlackListBean;
 import local.hal.st31.android.shift.db.DataAccess;
 import local.hal.st31.android.shift.db.DatabaseHelper;
+import local.hal.st31.android.shift.popup.ColorChangePopup;
 import local.hal.st31.android.shift.utils.GlobalUtils;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class BlackListActivity extends BaseActivity {
 
@@ -56,9 +64,10 @@ public class BlackListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private List<BlackListBean> blackMemberList;
     GroupMemberAdapter groupMemberAdapter;
-    private ColorPicker picker;
+//    private ColorPicker picker;
     private DatabaseHelper _helper;
     private SQLiteDatabase db;
+    private ColorChangePopup popup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +77,10 @@ public class BlackListActivity extends BaseActivity {
         groupNameList.add("--------");
         groupIdList = new ArrayList<>();
         groupIdList.add(0);
-        picker = findViewById(R.id.picker);
-        picker.setOldCenterColor(picker.getColor());
+//        picker = findViewById(R.id.picker);
+//        picker.setOldCenterColor(picker.getColor());
         _helper = new DatabaseHelper(getApplicationContext());
         db = _helper.getWritableDatabase();
-
 
         SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
         userMemberId = sp.getInt("userId",0);
@@ -86,59 +94,62 @@ public class BlackListActivity extends BaseActivity {
         String jsonGroupData = gson.toJson(map);
         GroupReceiver groupReceiver = new GroupReceiver();
         groupReceiver.execute(GROUP_URL,jsonGroupData);
+
+        RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setRefreshHeader(new BezierRadarHeader(getApplicationContext()).setEnableHorizontalDrag(true));
+//        ClassicsHeader header = fragmentView.findViewById(R.id.header);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                load();
+                refreshLayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
     }
 
     private void spinnerHandler(){
         NiceSpinner niceSpinner = findViewById(R.id.group_spinner);
-        Log.e("soso",groupNameList.toString());
         niceSpinner.attachDataSource(groupNameList);
         niceSpinner.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
                 selectedGroup = parent.getItemAtPosition(position).toString();
                 selectedGroupId = groupIdList.get(position);
-                Map<String,Integer> map = new HashMap<>();
-                map.put("groupId",selectedGroupId);
-                map.put("userId",userMemberId);
-                map.put("postNo",2);
-                Gson gson = new GsonBuilder()
-                        .serializeNulls()
-                        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                        .create();
-                String jsonMemberData = gson.toJson(map);
-                GroupMemberReceiver groupMemberReceiver = new GroupMemberReceiver();
-                groupMemberReceiver.execute(GROUP_URL,jsonMemberData);
+                load();
             }
         });
     }
+    private void load(){
+        Map<String,Integer> map = new HashMap<>();
+        map.put("groupId",selectedGroupId);
+        map.put("userId",userMemberId);
+        map.put("postNo",2);
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+        String jsonMemberData = gson.toJson(map);
+        GroupMemberReceiver groupMemberReceiver = new GroupMemberReceiver();
+        groupMemberReceiver.execute(GROUP_URL,jsonMemberData);
+    }
 
     private void swipeRecyclerViewHandler(){
+        blackMemberList = new ArrayList<>();
+        blackMemberList = DataAccess.getAllBlackMember(db,selectedGroupId);
         recyclerView = findViewById(R.id.memberRecyclerView);
         groupMemberAdapter = new GroupMemberAdapter(getApplicationContext());
         groupMemberAdapter.setListener(new GroupMemberAdapter.onMemberClickListener() {
             @Override
             public void onItemClick(int position, final BlackListBean blackListBean) {
-                if (blackListBean.getBlackRank() == 0) {
-                    blackListBean.setBlackRank(1);
-                    picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
-                        @Override
-                        public void onColorChanged(int color) {
-                            blackListBean.setColorCode(color);
-                            swipeRecyclerViewHandler();
-                        }
-                    });
-                } else {
-                    blackListBean.setBlackRank(0);
-
-                }
-
+                popup = new ColorChangePopup(getApplicationContext(),blackListBean);
+                popup.showPopupWindow();
             }
         });
         groupMemberAdapter.setData(blackMemberList);
         groupMemberAdapter.notifyDataSetChanged();
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//縦並び
-        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//縦並び
+//        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(groupMemberAdapter);
 
@@ -286,7 +297,7 @@ public class BlackListActivity extends BaseActivity {
 
             groupMemberList = new ArrayList<>();
             groupMemberIdList = new ArrayList<>();
-            blackMemberList = new ArrayList<>();
+//            blackMemberList = new ArrayList<>();
             try {
                 jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -299,14 +310,13 @@ public class BlackListActivity extends BaseActivity {
                         BlackListBean blackListBean = new BlackListBean();
                         blackListBean.setNickName(memberName);
                         blackListBean.setUserId(userId);
-                        blackListBean.setId(i);
                         blackListBean.setBlackRank(blackRank);
-                        blackListBean.setMyId(userMemberId);
                         blackListBean.setGroupId(selectedGroupId);
                         blackListBean.setColorCode(colorCode);
-                        blackMemberList.add(blackListBean);
+//                        blackMemberList.add(blackListBean);
                         groupMemberList.add(memberName);
                         groupIdList.add(userId);
+                        DataAccess.blackListReplace(db,blackListBean);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

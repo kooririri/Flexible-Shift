@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import local.hal.st31.android.shift.R;
 import local.hal.st31.android.shift.beans.BlackListBean;
+import local.hal.st31.android.shift.utils.GlobalUtils;
 
 public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.GroupMemberViewHolder> {
 
@@ -27,10 +30,12 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
 
     static class GroupMemberViewHolder extends RecyclerView.ViewHolder{
         TextView nameTextView;
+        RatingBar ratingBar;
 
         public GroupMemberViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.txName);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
         }
     }
     @NonNull
@@ -44,21 +49,33 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     public void onBindViewHolder(@NonNull GroupMemberAdapter.GroupMemberViewHolder groupMemberViewHolder, final int position) {
         final BlackListBean bean = data.get(position);
         groupMemberViewHolder.nameTextView.setText(bean.getNickName());
+        groupMemberViewHolder.ratingBar.setRating(bean.getBlackRank());
         if(listener != null){
             groupMemberViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(position,bean);
-                    notifyDataSetChanged();
+//                    notifyDataSetChanged();
                 }
             });
-            if (bean.getBlackRank() == 1) {
-                groupMemberViewHolder.itemView.setBackgroundColor(bean.getColorCode());
-            }
-            if(bean.getBlackRank() == 0){
-                groupMemberViewHolder.itemView.setBackgroundColor(Color.WHITE);
-            }
         }
+        if(bean.getBlackRank() == 0){
+            groupMemberViewHolder.nameTextView.setBackgroundColor(Color.WHITE);
+        }else if (bean.getBlackRank() > 0) {
+            groupMemberViewHolder.nameTextView.setBackgroundColor(bean.getColorCode());
+        }
+        groupMemberViewHolder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                bean.setBlackRank((int) rating);
+                if(bean.getBlackRank() == 0){
+                    groupMemberViewHolder.nameTextView.setBackgroundColor(Color.WHITE);
+                }else if(bean.getBlackRank() > 0){
+                    groupMemberViewHolder.nameTextView.setBackgroundColor(bean.getColorCode());
+                }
+                Toast.makeText(GlobalUtils.getInstance().context,bean.getNickName()+"   "+rating+"",Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

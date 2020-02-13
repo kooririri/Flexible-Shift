@@ -62,7 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sb4.append("black_user_id INTEGER PRIMARY KEY,");
         sb4.append("group_id INTEGER,");
         sb4.append("black_rank INTEGER,");
-        sb4.append("color_code INTEGER");
+        sb4.append("color_code INTEGER,");
+        sb4.append("nickname TEXT");
         sb4.append(")");
         String sql4 = sb4.toString();
 

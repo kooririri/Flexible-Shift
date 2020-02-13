@@ -79,27 +79,6 @@ public class ShiftMonthListAdapter2 extends RecyclerView.Adapter<ShiftMonthListA
             shiftMonthListViewHolder.textView.setText((data.get(i).getDate()).substring(8)+"日");
         }
 
-
-//        Map<String, JSONArray> kaburuMap = GlobalUtils.getInstance().kaburuMap;
-//        JSONArray jsonArray = kaburuMap.get("2");
-//        Log.e("ppqq",jsonArray.length()+"");
-//        String tempPositon = String.valueOf(position);
-//        if(position <10){
-//            tempPositon = "0" + position;
-//        }
-//        for (int i =0;i<jsonArray.length();i++){
-//            try {
-//                String day = jsonArray.getString(i);
-//                if(tempPositon.equals(day.substring(8))){
-//                    shiftMonthListViewHolder.textView.setBackgroundColor(R.color.sblue);
-//                }
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-//        shiftMonthListViewHolder.textView.setBackgroundColor(R.color.sblue);
         ShiftOptionAdapter2 shiftOptionAdapter2 = new ShiftOptionAdapter2(viewGroup.getContext());
         shiftOptionAdapter2.setShiftList(data);
         shiftOptionAdapter2.notifyDataSetChanged();
@@ -113,13 +92,12 @@ public class ShiftMonthListAdapter2 extends RecyclerView.Adapter<ShiftMonthListA
 
             @Override
             public void onItemClick(int i, ShiftTypeBean res) {
-                if(res.getKaburuFlag() == 1&&res.getSelectedFlag()==8){
+                if((res.getKaburuFlag() == 1||res.getKaburuFlag() == 2)&&res.getSelectedFlag()==8){
                     if(count <= 3){
                         res.setSelectedFlag(0);
                     }else{
                         Toast.makeText(GlobalUtils.getInstance().context,"3日以上変更できない。",Toast.LENGTH_SHORT).show();
                     }
-                    Log.e("countjj",count+"");
                     count ++ ;
                 }else{
                     Toast.makeText(GlobalUtils.getInstance().context,"被ってる日しか変更できない。",Toast.LENGTH_SHORT).show();

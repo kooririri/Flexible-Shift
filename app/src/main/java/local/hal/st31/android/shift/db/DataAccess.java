@@ -220,13 +220,39 @@ public class DataAccess {
         cursor.close();
         return list;
     }
+
     public static void  blackListReplace(SQLiteDatabase db, BlackListBean bean){
         ContentValues values = new ContentValues();
         values.put("black_user_id",bean.getUserId());
         values.put("group_id",bean.getGroupId());
         values.put("black_rank",bean.getBlackRank());
         values.put("color_code",bean.getColorCode());
-        db.replace("shiftType",null,values);
+        values.put("nickname",bean.getNickName());
+        db.replace("blackList",null,values);
         values.clear();
+    }
+
+    public static List<BlackListBean> getAllBlackMember(SQLiteDatabase db,int groupId){
+        List<BlackListBean> list = new ArrayList<>();
+        String sql = "SELECT * FROM blackList WHERE group_id = ?";
+        Cursor cursor = db.rawQuery(sql,new String[]{String.valueOf(groupId)});
+        if(cursor.moveToFirst()){
+            do{
+                int blackMemberId = cursor.getInt(cursor.getColumnIndex("black_user_id"));
+                int blackRank = cursor.getInt(cursor.getColumnIndex("black_rank"));
+                int colorCode = cursor.getInt(cursor.getColumnIndex("color_code"));
+                String nickname = cursor.getString(cursor.getColumnIndex("nickname"));
+                BlackListBean bean = new BlackListBean();
+                bean.setBlackRank(blackRank);
+                bean.setColorCode(colorCode);
+                bean.setGroupId(groupId);
+                bean.setUserId(blackMemberId);
+                bean.setNickName(nickname);
+                list.add(bean);
+            }
+            while(cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
     }
 }

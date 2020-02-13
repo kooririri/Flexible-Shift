@@ -7,36 +7,49 @@
     tools:context=".BlackListActivity"
     android:orientation="vertical">
 
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/group_spinner"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Group"
-        android:gravity="center_vertical"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:background="#fce4ec"
-        android:elevation="5dp"
-        android:layout_margin="5dp"
-        />
+        android:layout_height="match_parent"
+        >
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlAccentColor="@android:color/white"
+            app:srlPrimaryColor="@color/sblue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <org.angmarch.views.NiceSpinner
+                android:id="@+id/group_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Group"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:background="#fce4ec"
+                android:elevation="5dp"
+                android:layout_margin="5dp"
+                />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/memberRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/memberRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
-    <com.larswerkman.holocolorpicker.ColorPicker
-        android:id="@+id/picker"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="送信"
-        android:onClick="sendButtonClick"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="送信"
+                android:onClick="sendButtonClick"/>
+        </LinearLayout>
 
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
 
