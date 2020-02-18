@@ -652,6 +652,7 @@ public class ShiftSubmitFragment extends Fragment {
                         shiftRequestBean.setShiftTypeId(requestObject.getInt("type_id"));
                         shiftRequestBean.setSelectedFlag(requestObject.getInt("selected_flag"));
                         shiftRequestBean.setKaburuFlag(requestObject.getInt("kaburu_flag"));
+                        shiftRequestBean.setColorCode(requestObject.getInt("color_code"));
                         String date = requestObject.getString("date");
                         String stringYear = date.substring(0,4);
                         String stringMonth = "";
@@ -832,6 +833,9 @@ public class ShiftSubmitFragment extends Fragment {
                 }
                 if(sourceData.get(i).containsKey("selfScheduleFlag")){
                     bean.setSelfScheduleFlag((Integer) sourceData.get(i).get("selfScheduleFlag"));
+                }
+                if(sourceData.get(i).containsKey("colorCode")){
+                    bean.setColorCode((Integer) sourceData.get(i).get("colorCode"));
                 }
 
                 list.add(bean);

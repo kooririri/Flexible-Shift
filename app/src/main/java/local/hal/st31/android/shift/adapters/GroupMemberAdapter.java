@@ -73,7 +73,6 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
                 }else if(bean.getBlackRank() > 0){
                     groupMemberViewHolder.nameTextView.setBackgroundColor(bean.getColorCode());
                 }
-                Toast.makeText(GlobalUtils.getInstance().context,bean.getNickName()+"   "+rating+"",Toast.LENGTH_SHORT).show();
             }
         });
 

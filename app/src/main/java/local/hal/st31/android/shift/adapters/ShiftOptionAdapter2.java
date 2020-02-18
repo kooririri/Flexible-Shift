@@ -93,15 +93,18 @@ public class ShiftOptionAdapter2 extends RecyclerView.Adapter<ShiftOptionAdapter
             shiftOptionViewHolder.optionBlock.setTextColor(Color.WHITE);
             shiftOptionViewHolder.startTime.setTextColor(Color.WHITE);
             shiftOptionViewHolder.endTime.setTextColor(Color.WHITE);
-        }
-        if (res.getKaburuFlag() == 1){
-            shiftOptionViewHolder.kaburuImage.setImageResource(R.drawable.baseline_error_outline_white_18);
+            if (res.getKaburuFlag() == 1){
+                shiftOptionViewHolder.kaburuImage.setImageResource(R.drawable.baseline_error_outline_white_18);
+                shiftOptionViewHolder.itemView.setBackgroundColor(res.getColorCode());
 //                shiftOptionViewHolder.isKaburu.setText("被ってる");
 //                shiftOptionViewHolder.isKaburu.setBackgroundColor(Color.RED);
 //                shiftOptionViewHolder.isKaburu.setTextColor(Color.WHITE);
-        }else if(res.getKaburuFlag() == 2){
-            shiftOptionViewHolder.kaburuImage.setImageResource(R.drawable.baseline_warning_white_24);
+            }else if(res.getKaburuFlag() == 2){
+                shiftOptionViewHolder.kaburuImage.setImageResource(R.drawable.baseline_warning_white_24);
+                shiftOptionViewHolder.itemView.setBackgroundColor(res.getColorCode());
+            }
         }
+
 
     }
 

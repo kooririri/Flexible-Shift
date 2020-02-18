@@ -18,7 +18,6 @@ public class ShiftTypeBean {
 
 
     public ShiftTypeBean(){
-        colorCode = 0xffffffff;
     }
 
     @Override

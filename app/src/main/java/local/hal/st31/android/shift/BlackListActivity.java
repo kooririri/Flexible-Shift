@@ -310,6 +310,7 @@ public class BlackListActivity extends BaseActivity {
                         BlackListBean blackListBean = new BlackListBean();
                         blackListBean.setNickName(memberName);
                         blackListBean.setUserId(userId);
+                        blackListBean.setMyId(userMemberId);
                         blackListBean.setBlackRank(blackRank);
                         blackListBean.setGroupId(selectedGroupId);
                         blackListBean.setColorCode(colorCode);

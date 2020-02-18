@@ -7,6 +7,7 @@ public class BlackListBean {
     private int blackRank;
     private int colorCode;
     private int groupId;
+    private int myId;
 
     public BlackListBean(){
         blackRank = 0;
@@ -61,5 +62,13 @@ public class BlackListBean {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public int getMyId() {
+        return myId;
+    }
+
+    public void setMyId(int myId) {
+        this.myId = myId;
     }
 }

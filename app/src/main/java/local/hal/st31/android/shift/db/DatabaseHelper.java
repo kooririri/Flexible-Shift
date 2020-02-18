@@ -38,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sb2.append("date TEXT,");
         sb2.append("selected_flag INTEGER,");
         sb2.append("kaburu_flag INTEGER,");
+        sb2.append("color_code INTEGER,");
         sb2.append("self_schedule_flag INTEGER");
         sb2.append(")");
         String sql2 = sb2.toString();
@@ -60,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder sb4 = new StringBuilder();
         sb4.append("CREATE TABLE blackList (");
         sb4.append("black_user_id INTEGER PRIMARY KEY,");
+        sb4.append("user_id INTEGER,");
         sb4.append("group_id INTEGER,");
         sb4.append("black_rank INTEGER,");
         sb4.append("color_code INTEGER,");

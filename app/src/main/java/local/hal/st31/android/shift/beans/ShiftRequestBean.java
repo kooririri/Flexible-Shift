@@ -12,6 +12,7 @@ public class ShiftRequestBean {
     private int selectedFlag;
     private int kaburuFlag;//blackListの人と被ってるかどうかを判定するフラグ
     private int selfScheduleFlag;//自分の私用と被ってるかどうかを判定するフラグ
+    private int colorCode;
 
 
     public ShiftRequestBean(){
@@ -98,5 +99,13 @@ public class ShiftRequestBean {
 
     public void setSelfScheduleFlag(int selfScheduleFlag) {
         this.selfScheduleFlag = selfScheduleFlag;
+    }
+
+    public int getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(int colorCode) {
+        this.colorCode = colorCode;
     }
 }

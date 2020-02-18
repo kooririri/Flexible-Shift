@@ -177,6 +177,7 @@ public class DataAccess {
         values.put("selected_flag",bean.getSelectedFlag());
         values.put("kaburu_flag",bean.getKaburuFlag());
         values.put("self_schedule_flag",bean.getSelfScheduleFlag());
+        values.put("color_code",bean.getColorCode());
         db.replace("shiftRequest",null,values);
         values.clear();
     }
@@ -200,6 +201,7 @@ public class DataAccess {
                 String comment = cursor.getString(cursor.getColumnIndex("comment"));
                 int kaburuFlag = cursor.getInt(cursor.getColumnIndex("kaburu_flag"));
                 int selfScheduleFlag = cursor.getInt(cursor.getColumnIndex("self_schedule_flag"));
+                int colorCode = cursor.getInt(cursor.getColumnIndex("color_code"));
                 Map<String,Object> map = new HashMap<>();
                 map.put("id",id);
                 map.put("userId",userId);
@@ -213,6 +215,7 @@ public class DataAccess {
                 map.put("comment",comment);
                 map.put("kaburuFlag",kaburuFlag);
                 map.put("selfScheduleFlag",selfScheduleFlag);
+                map.put("colorCode",colorCode);
                 list.add(map);
             }
             while(cursor.moveToNext());
@@ -224,6 +227,7 @@ public class DataAccess {
     public static void  blackListReplace(SQLiteDatabase db, BlackListBean bean){
         ContentValues values = new ContentValues();
         values.put("black_user_id",bean.getUserId());
+        values.put("user_id",bean.getMyId());
         values.put("group_id",bean.getGroupId());
         values.put("black_rank",bean.getBlackRank());
         values.put("color_code",bean.getColorCode());
@@ -239,11 +243,13 @@ public class DataAccess {
         if(cursor.moveToFirst()){
             do{
                 int blackMemberId = cursor.getInt(cursor.getColumnIndex("black_user_id"));
+                int myId = cursor.getInt(cursor.getColumnIndex("user_id"));
                 int blackRank = cursor.getInt(cursor.getColumnIndex("black_rank"));
                 int colorCode = cursor.getInt(cursor.getColumnIndex("color_code"));
                 String nickname = cursor.getString(cursor.getColumnIndex("nickname"));
                 BlackListBean bean = new BlackListBean();
                 bean.setBlackRank(blackRank);
+                bean.setMyId(myId);
                 bean.setColorCode(colorCode);
                 bean.setGroupId(groupId);
                 bean.setUserId(blackMemberId);

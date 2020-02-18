@@ -80,7 +80,6 @@ public class ColorChangePopup extends BasePopupWindow {
             public void onClick(View v) {
                 blackListBean.setColorCode(colorCode);
                 ColorChangePopup.this.dismiss();
-                Toast.makeText(getContext(),colorCode+"",Toast.LENGTH_LONG).show();
             }
         });
     }
