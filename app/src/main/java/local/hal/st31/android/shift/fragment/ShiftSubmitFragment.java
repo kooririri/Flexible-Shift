@@ -486,8 +486,8 @@ public class ShiftSubmitFragment extends Fragment {
                         DataAccess.shiftTypeReplace(db,bean);
 
                         num++;
-
                     }
+
                     int count = 1;
                     for(int i = 1;i<=days;i++){
                         String date = year + "-" + month + "-" + i;
@@ -530,7 +530,7 @@ public class ShiftSubmitFragment extends Fragment {
                     }
                     shiftMonthListAdapter = new ShiftMonthListAdapter(getContext());
                     dataList = getData();
-
+                    Log.e("asdd",dataList.toString());
                     shiftMonthListAdapter.setList(dataList);
                     shiftMonthListAdapter.notifyDataSetChanged();
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

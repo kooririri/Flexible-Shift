@@ -113,7 +113,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:calendar_content_view_id="@+id/linearView"
-            app:default_status="shrink"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto">
 
